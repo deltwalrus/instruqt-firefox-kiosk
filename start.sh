@@ -23,19 +23,17 @@ Xvfb :99 -screen 0 1920x1080x24 &
 # Wait for Xvfb to initialize
 sleep 5
 
-# Start xpra in HTML5 mode without unnecessary features
+# Start xpra in HTML5 mode, launching Firefox directly
 XPRA_FORCE_REPLACE_WM=1 xpra start :99 \
     --bind-tcp=0.0.0.0:8080 \
     --html=on \
-    --start-child=xterm \
+    --start-child="firefox --kiosk ${START_URL}" \
     --exit-with-children \
     --daemon=no \
     --no-pulseaudio \
     --no-webcam \
     --socket-dir=/run/xpra
 
-# Start Firefox in kiosk mode with the provided URL or default
-firefox --kiosk "${START_URL}" &
-
 # Keep the container running
+tail -f /dev/null
 
